@@ -1,0 +1,58 @@
+<video id="meuVideo" width="800px" height="450px" controls controlsList="nodownload">
+    <source src="http://files.cod3r.com.br/curso-web/video.mp4" type="video/mp4">
+</video>
+
+<div wm-progresso="meuVideo" class="progresso">
+    <div></div>
+</div>
+
+<div>
+    <button wm-play="meuVideo" onclick="IniciarVideo()">Play</button>
+    <button wm-pause="meuVideo" onclick="PausarVideo()">Pause</button>
+</div>
+
+<style>
+    .progresso {
+        height: 20px;
+        width: 500px;
+        border: solid #444;
+        margin: 20px;
+    }
+    .progresso > div {
+        background-color: red;
+        color: #fff;
+        height: 100%;
+        text-align: right;
+        font-size: 14px;
+        width: 0%;
+    }
+</style>
+
+<script>
+function IniciarVideo() {
+        let tocar = document.getElementById('meuVideo');
+        tocar.play();
+        tocar.oncontextmenu = () => false;
+    }
+    
+function PausarVideo() {
+    let pausar = document.getElementById('meuVideo');
+    pausar.pause();
+    pausar.oncontextmenu = () => false;
+    }
+
+function ConfigurarVideo(id) {
+    video = document.getElementById(id)
+    setInterval(() => {
+        const percentual = (video.currentTime / video.duration) * 100
+        const valorDiv = document.querySelector(`[wm-progresso=${id}] > div`)
+        valorDiv.style.width = `${percentual}%`
+        valorDiv.innerHTML = `${percentual.toFixed(1)}%`
+    }, 500)
+}
+ConfigurarVideo('meuVideo')
+
+
+</script>
+
+

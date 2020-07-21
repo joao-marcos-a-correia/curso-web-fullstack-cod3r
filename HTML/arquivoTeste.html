@@ -1,0 +1,392 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> - Bimbo</title>
+    <script src="https://kit.fontawesome.com/yourcode.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--Import materialize.css-->
+    <script type="text/javascript">
+        function msg() {
+            document.getElementById("manipula").style.cursor = "pointer";
+        }
+        $(document).ready(function () {
+            $('table').DataTable({
+                columnDefs: [
+                    {
+                        targets: [9],
+                        className: 'mdl-data-table__cell--non-numeric'
+                    }
+                ]
+            });
+        });
+    </script>
+
+    <link rel="stylesheet" href="/css/materialize.min.css">
+    <link rel="stylesheet" href="/css/materialize.css">
+
+    <style>
+        .title-card {
+            padding: 5px;
+            color: white;
+            background-color: #70a8be;
+            text-align: center;
+            border-radius: 3px;
+        }
+
+        #header {
+            margin: 0px;
+            position: absolute;
+            right: 0px;
+            overflow: scroll;
+            overflow: auto;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="header formMain">
+        <div class="card-panel">
+            <div class="row">
+                <div class="col s12 m4 l4">
+                    <div class="card">
+                        <h6 class=" title-card" style="font-family:'Roboto', sans-serif">Filtros</h6>
+                        <div class="card-content" style="padding:2px !important">
+                            <div class="col s12 m12 l12">
+                                @*<label>Centro de Vendas</label>*@
+                                <select id="cmbBranchInvoice" name="cmbBranchInvoice" placeholder="Centro de Vendas"
+                                        data-bind="options: mainModel.branchInvoiceList,
+                                               value: mainModel.branchInvoiceSelected,
+                                               optionsText: 'CBranchInvoiceName',
+                                               optionsCaption: '-- Selecione --',"
+                                        required aria-required="true"></select>
+                            </div>
+                            <div class="col m12">
+                                <label>Data</label>
+                                <input type="text" class="datepicker" id="dateDistribution" name="dateDistribution" data-bind="pickadate: mainModel.dDateDistributionSelected" />
+                            </div>
+
+                            <div class="col s12 m12 l12" style="padding:-10px">
+                                <h6 class="center title-card" style="background-color:#70a8be; padding:4px 0 4px 0; color: #FFF; font-family:'Roboto', sans-serif">Canal</h6>
+
+
+                                <!-- ko if: mainModel.autoServiceFiltered-->
+                                <a class="btn waves-effect" style="width: 100%; text-align:center; background-color: #70a8be;" href="#" data-bind="click: mainModel.onAutoServiceClicked">
+                                    <i class="material-icons left">local_shipping</i>Auto Serviço
+                                </a>
+                                <!-- /ko-->
+                                <!-- ko ifnot: mainModel.autoServiceFiltered-->
+                                <a class="btn waves-effect grey lighten-2 grey-text" style="width: 100%;" href="#" data-bind="click: mainModel.onAutoServiceClicked">
+                                    <i class="material-icons left">local_shipping</i>Auto Serviço
+                                </a>
+                                <!-- /ko-->
+                                <span>&nbsp;</span>
+                                <!-- ko if: mainModel.intermediaryFiltered-->
+                                <a class="btn waves-effect" style="width: 100%; background-color: #70a8be;" href="#" Enabled="false" data-bind="click: mainModel.onIntermediaryClicked">
+                                    <i class="material-icons left">local_shipping</i>Trad. - Intermediário
+                                </a>
+                                <!-- /ko-->
+                                <!-- ko ifnot: mainModel.intermediaryFiltered-->
+                                <a class="btn waves-effect grey lighten-2 grey-text" style="width: 100%;" href="#" Enabled="false" data-bind="click: mainModel.onIntermediaryClicked">
+                                    <i class="material-icons left">local_shipping</i>Trad. - Intermediário
+                                </a>
+                                <!-- /ko-->
+                                <span>&nbsp;</span>
+                                <!-- ko if: mainModel.directSaleFiltered-->
+                                <a class="btn waves-effect" style="width: 100%; background-color: #70a8be;" href="#" data-bind="click: mainModel.onDirectSaleClicked">
+                                    <i class="material-icons left">local_shipping</i>Trad. - Venda Direta
+                                </a>
+                                <!-- /ko-->
+                                <!-- ko ifnot: mainModel.directSaleFiltered-->
+                                <a class="btn waves-effect grey lighten-2 grey-text" style="width: 100%;" href="#" data-bind="click: mainModel.onDirectSaleClicked">
+                                    <i class="material-icons left">local_shipping</i>Trad. - Venda Direta
+                                </a>
+                                <!-- /ko-->
+                                <span>&nbsp;</span>
+                            </div>
+                        </div>
+                        <div class="col s12 m12 l12">
+                            <h6 class=" title-card" style="font-family:'Roboto', sans-serif">Rotas</h6>
+                            <div class="col s4 m4 l4">
+                                <!-- ko if: mainModel.AllFiltered -->
+                                <a class="btn waves-effect" style="width: 100%; text-align:center; background-color: #70a8be;" href="#" data-bind="click: mainModel.FilterAllClicked">
+                                    Todos
+                                </a>
+                                <!-- /ko -->
+                                <!-- ko ifnot: mainModel.AllFiltered -->
+                                <a class="btn waves-effect grey lighten-2 grey-text" style="width: 100%; text-align:center;" href="#" data-bind="click: mainModel.FilterAllClicked">
+                                    Todos
+                                </a>
+                                <!-- /ko -->
+                                <span>&nbsp;</span>
+                            </div>
+                            <div class="col s4 m4 l4">
+                                <!-- ko if: mainModel.PendingFiltered -->
+                                <a class="btn waves-effect" style="width: 100%; text-align:justify; background-color: #70a8be;" href="#" data-bind="click: mainModel.FilterPendingClicked">
+                                    Pendente
+                                </a>
+                                <!-- /ko -->
+                                <!-- ko ifnot: mainModel.PendingFiltered -->
+                                <a class="btn waves-effect grey lighten-2 grey-text" style="width: 100%; text-align:justify;" href="#" data-bind="click: mainModel.FilterPendingClicked">
+                                    Pendente
+                                </a>
+                                <!-- /ko -->
+                                <span>&nbsp;</span>
+                            </div>
+                            <div class="col s4 m4 l4">
+                                <!-- ko if: mainModel.ReceivedFiltered -->
+                                <a class="btn waves-effect" style="width: 100%; text-align:center; background-color: #70a8be;" href="#" data-bind="click: mainModel.FilterReceivedClicked">
+                                    Recebidos
+                                </a>
+                                <!-- /ko -->
+                                <!-- ko ifnot: mainModel.ReceivedFiltered -->
+                                <a class="btn waves-effect grey lighten-2 grey-text" style="width: 100%; text-align:center;" href="#" data-bind="click: mainModel.FilterReceivedClicked">
+                                    Recebidos
+                                </a>
+                                <!-- /ko -->
+                                <span>&nbsp;</span>
+                            </div>
+                            <table id="example1" class="display nowrap striped bordered" cellspacing="0" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Rota</th>
+                                        <th>Nome</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    <tr>
+                                        <td>1001</td>
+                                        <td>1001</td>
+                                        <td>Pendente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1002</td>
+                                        <td>1002</td>
+                                        <td>Pendente</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1003</td>
+                                        <td>1003</td>
+                                        <td>Pendente</td>
+                                    </tr>
+                                </tbody>
+
+                            </table>
+                        </div>
+                        <span>&nbsp;</span>
+                    </div>
+                </div>
+                <div class="col s12 m8 l8">
+                    <div class="card">
+                        <h6 class="title-card" style="font-family:'Roboto', sans-serif">Centro de Vendas</h6>
+                        <div class="card-content">
+                            <div class="col s3 m4 l3">
+                                <label>Saida</label>
+                                <input class="form-control" type="text" readonly />
+                            </div>
+                            <div class="col s3 m4 l3">
+                                <label>Retorno</label>
+                                <input class="form-control" type="text" readonly />
+                            </div>
+                            <div class="col s3 m4 l3">
+                                <label>Vendedor</label>
+                                <input class="form-control" type="text" readonly />
+                            </div>
+                            <div class="col s3 m4 l3">
+                                <label>Placa</label>
+                                <input class="form-control" type="text" readonly />
+                                <h1 />
+                            </div>
+                            <div class="col s5 offset-s4s" style="float:right;">
+                                <button id="btn_Confirm_Receb" name="btn_Confirm_Receb" type="button" class="btn waves-effect" style="width: 100%; width: 100%; color: rgb(255, 255, 255); background-color: rgb(134, 204, 131);border-radius:3px;">
+                                    <i data-bind="text: icon, css: iconClass" class="material-icons left">check</i>
+                                    <span class="center" data-bind="text: label">Confirmar Recebimento</span>
+                                </button>
+                            </div>
+                            <span>&nbsp;</span>
+                        </div>
+                        <span>&nbsp;</span>
+                    </div>
+                </div>
+                <div class="col s12 m8 l8">
+                    <div class="card">
+                        <h6 class="title-card" style="font-family:'Roboto', sans-serif">Devolução de Produtos - Troca</h6>
+                        <div class="card-content">
+                            <table class="display nowrap striped bordered" cellspacing="0" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Descrição</th>
+                                        <th>Qtde Registrada</th>
+                                        <th>Qtde Recebida</th>
+                                        <th>Recuperado</th>
+                                        <th>Não Recuperado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>182</td>
+                                        <td>Ana Maria</td>
+                                        <td>10</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>182</td>
+                                        <td>Rap 10</td>
+                                        <td>10</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h6 />
+                            <div class="col s8 m8 l1">
+                                <button class="btn waves-effect waves-light" style="background-color:#70a8be;text-align:center">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </div>
+                            <span>&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col s8 offset-s4s" style="margin-top:-4px">
+                    <div class="card">
+                        <h6 class="title-card" style="font-family:'Roboto', sans-serif">Devolução de Equipamentos</h6>
+                        <div class="card-content">
+                            <table class="display nowrap striped bordered" cellspacing="0" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Descrição</th>
+                                        <th>Qtde Registrada</th>
+                                        <th>Qtde Recebida</th>
+                                        <th>Recuperado</th>
+                                        <th>Não Recuperado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>182</td>
+                                        <td>Ana Maria</td>
+                                        <td>10</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <td>182</td>
+                                        <td>Rap 10</td>
+                                        <td>10</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                        <td>5</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h6 />
+                            <div class="col s12 m8 l1">
+                                <button class="btn waves-effect waves-light" style="background-color:#70a8be;text-align:center">
+                                    <i class="fa fa-edit"></i>
+                                </button>
+                            </div>
+                            <span>&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="~/js/materialize.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+</body>
+</html>
+
+@section scripts {
+
+    <!-- components -->
+    <script src="~/js/components/customAutocomplete.js" asp-append-version="true"></script>
+    <!-- helper -->
+    <script src="~/js/util.js" asp-append-version="true"></script>
+    <!-- Report Visit JS -->
+    <script src="~/js/documents-emission-v2/modelMain.js" asp-append-version="true"></script>
+    <script src="~/lib/lz-string/lz-string.js"></script>
+
+    <script type="text/javascript">
+
+
+        // ******************************************************************************
+        //  INITIALIZE WTM v3
+        // ******************************************************************************
+
+
+
+        // ******************************************************************************
+        //  INITIALIZE KO
+        // ******************************************************************************
+
+        ko.bindingHandlers.materialSelectEnabled = {
+            update: function (element, valueAccessor) {
+
+                var value = valueAccessor();
+
+                if (!ko.unwrap(value)) {
+                    $(element).prop('disabled', true);
+                    $(element).material_select();
+                } else {
+                    $(element).prop('disabled', false);
+                    $(element).material_select();
+                }
+            }
+        };
+
+
+        // KO - Main Model -------
+        var mainModel = new MainModel();
+        //mainModel.InitializeControlsData();
+
+
+        //// Configs / Binding
+        ko.options.deferUpdates = true;
+        ko.applyBindings(mainModel, document.getElementById("formMain"));
+
+
+        //// ******************************************************************************
+        //// ON READY
+        //// ******************************************************************************
+
+        $(document).ready(function () {
+
+             AUTOCOMPLETE - INITIALIZE
+            initAutoComplete({
+                inputId: 'autoUserConsolidated',
+                ajaxUrl: 'GetUserAutocomplete',
+                concatID: true,
+                onRequestInit: function () {
+                    Util.ShowLoading();
+                },
+                onRequestFinish: function () {
+                    Util.HideLoading();
+                },
+                onSelect: function (id, display, appendix) {
+                    mainModel.consolidatedModel.userSelected(id + " - " + display);
+                    mainModel.consolidatedModel.userIdSelected(id);
+                }
+            });
+
+            // Materialize
+            Util.RefreshMaterialize();
+
+        });
+    </script>
+}
